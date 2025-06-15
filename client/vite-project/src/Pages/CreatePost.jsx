@@ -36,7 +36,7 @@ function CreatePost() {
     setGeneratingImg(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/openai', {
+      const response = await fetch('https://artifexai-server.onrender.com/api/v1/openai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,41 +71,41 @@ function CreatePost() {
   }
 
   const handleSubmit = async (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  if (form.prompt && form.photo) {
-    setLoading(true)
+    if (form.prompt && form.photo) {
+      setLoading(true)
 
-    try {
-      let photoToSend = form.photo
+      try {
+        let photoToSend = form.photo
 
-      // 🔍 If it's a URL (mock image), convert it to base64
-      if (form.photo.startsWith('http')) {
-        photoToSend = await convertImageUrlToBase64(form.photo)
-      }
+        // 🔍 If it's a URL (mock image), convert it to base64
+        if (form.photo.startsWith('http')) {
+          photoToSend = await convertImageUrlToBase64(form.photo)
+        }
 
-      const response = await fetch("http://localhost:8080/api/v1/post", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...form,
-          photo: photoToSend
+        const response = await fetch("https://artifexai-server.onrender.com/api/v1/post", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...form,
+            photo: photoToSend
+          })
         })
-      })
 
-      await response.json()
-      navigate('/')
-    } catch (error) {
-      alert(error.message)
-    } finally {
-      setLoading(false)
+        await response.json()
+        navigate('/')
+      } catch (error) {
+        alert(error.message)
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      alert('Please enter a prompt and generate or upload an image')
     }
-  } else {
-    alert('Please enter a prompt and generate or upload an image')
   }
-}
 
   return (
     <section className='max-w-7xl mx-auto'>
