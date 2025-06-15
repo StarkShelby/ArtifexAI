@@ -27,13 +27,7 @@ function CreatePost() {
     const randomPrompt = getRandomPrompts(form.prompt)
     setForm({ ...form, prompt: randomPrompt })
   }
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const base64 = await convertFileToBase64(file);
-      setForm({ ...form, photo: base64 });
-    }
-  }
+
 
 
   const generateImage = async () => {
@@ -154,7 +148,7 @@ function CreatePost() {
             <input
               type='file'
               accept='image/*'
-              onChange={handleImageUpload}
+              onChange={handleIM}
               className='border border-gray-300 p-2 rounded-md'
             />
           </div>
