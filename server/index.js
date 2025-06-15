@@ -12,7 +12,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'https://artifex-ai-fawn.vercel.app',  // your frontend domain
+  origin: 'https://artifex-ai-fawn.vercel.app',  // My frontend domain
   credentials: true
 }))
 app.use(express.json({limit: '50mb'}))

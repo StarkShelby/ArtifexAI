@@ -5,6 +5,7 @@ import { getRandomPrompts } from '../utils'
 import { FormField, Loader } from '../Components'
 import { mockImages } from '../assets/mockImages'
 import { convertImageUrlToBase64 } from '../utils/index.js'
+import { convertFileToBase64 } from '../utils'
 
 function CreatePost() {
   const navigate = useNavigate()
@@ -25,6 +26,13 @@ function CreatePost() {
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompts(form.prompt)
     setForm({ ...form, prompt: randomPrompt })
+  }
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const base64 = await convertFileToBase64(file);
+      setForm({ ...form, photo: base64 });
+    }
   }
 
 
@@ -84,7 +92,7 @@ function CreatePost() {
           photoToSend = await convertImageUrlToBase64(form.photo)
         }
 
-        const response = await fetch("https://artifexai-server.onrender.com/api/v1/post", {
+        const response = await fetch("https://artifexai-server.onrender/api/v1/post", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -146,7 +154,7 @@ function CreatePost() {
             <input
               type='file'
               accept='image/*'
-              onChange={(e) => convertToBase64(e.target.files[0])}
+              onChange={handleImageUpload}
               className='border border-gray-300 p-2 rounded-md'
             />
           </div>
