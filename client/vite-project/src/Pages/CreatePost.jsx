@@ -84,7 +84,7 @@ function CreatePost() {
           photoToSend = await convertImageUrlToBase64(form.photo)
         }
 
-        const response = await fetch("https://artifexai-server.onrender/api/v1/post", {
+        const response = await fetch("https://artifexai-server.onrender.com/api/v1/post", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -146,7 +146,7 @@ function CreatePost() {
             <input
               type='file'
               accept='image/*'
-              onChange={(e) => convertToBase64(e.target.files[0])}
+              onChange={(e) => setForm({ ...form, photo: e.target.files[0] })}
               className='border border-gray-300 p-2 rounded-md'
             />
           </div>
