@@ -154,10 +154,16 @@ function CreatePost() {
               type='file'
               accept='image/*'
               onChange={async (e) => {
-                const file = e.target.files[0]
-                if (file) {
-                  const base64 = await convertFileToBase64(file)
-                  setForm({ ...form, photo: base64 })
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                  const base64 = await convertFileToBase64(file);
+                  setForm({ ...form, photo: base64 });
+                  console.log("Image base64 set successfully ✅");
+                } catch (error) {
+                  console.error("Error converting file to base64:", error);
+                  alert("Failed to upload image. Try a different one.");
                 }
               }}
               className='border border-gray-300 p-2 rounded-md'
