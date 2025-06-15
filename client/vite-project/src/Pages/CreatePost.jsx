@@ -6,6 +6,16 @@ import { FormField, Loader } from '../Components'
 import { mockImages } from '../assets/mockImages'
 import { convertImageUrlToBase64 } from '../utils/index.js'
 
+const convertFileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+
 function CreatePost() {
   const navigate = useNavigate()
 
@@ -79,10 +89,7 @@ function CreatePost() {
       try {
         let photoToSend = form.photo
 
-        // 🔍 If it's a URL (mock image), convert it to base64
-        if (form.photo.startsWith('http')) {
-          photoToSend = await convertImageUrlToBase64(form.photo)
-        }
+
 
         const response = await fetch("https://artifexai-server.onrender.com/api/v1/post", {
           method: 'POST',
@@ -146,7 +153,13 @@ function CreatePost() {
             <input
               type='file'
               accept='image/*'
-              onChange={(e) => setForm({ ...form, photo: e.target.files[0] })}
+              onChange={async (e) => {
+                const file = e.target.files[0]
+                if (file) {
+                  const base64 = await convertFileToBase64(file)
+                  setForm({ ...form, photo: base64 })
+                }
+              }}
               className='border border-gray-300 p-2 rounded-md'
             />
           </div>
