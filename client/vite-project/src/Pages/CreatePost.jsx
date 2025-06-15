@@ -5,7 +5,6 @@ import { getRandomPrompts } from '../utils'
 import { FormField, Loader } from '../Components'
 import { mockImages } from '../assets/mockImages'
 import { convertImageUrlToBase64 } from '../utils/index.js'
-import { convertFileToBase64 } from '../utils'
 
 function CreatePost() {
   const navigate = useNavigate()
@@ -27,7 +26,6 @@ function CreatePost() {
     const randomPrompt = getRandomPrompts(form.prompt)
     setForm({ ...form, prompt: randomPrompt })
   }
-
 
 
   const generateImage = async () => {
@@ -148,7 +146,7 @@ function CreatePost() {
             <input
               type='file'
               accept='image/*'
-              onChange={handleIM}
+              onChange={(e) => convertToBase64(e.target.files[0])}
               className='border border-gray-300 p-2 rounded-md'
             />
           </div>
